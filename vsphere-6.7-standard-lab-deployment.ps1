@@ -36,28 +36,34 @@
 # 02/10/2020
 #   * Added support for deploying basic vSphere environment (ESXi VM + VCSA) into VMware Cloud on AWS (Nested vSAN not supported)
 
+
+
 # Physical ESXi host or vCenter Server to deploy vSphere 6.7 lab
-$VIServer = "vcenter.sddc-a-b-c-d.vmwarevmc.com"
-$VIUsername = 'cloudadmin@vmc.local'
-$VIPassword = 'FILL-ME-IN'
+$VIServer = "esx.greenscript.net"
+$VIUsername = "root"
+$VIPassword = "VMware1!"
 
 # Specifies whether deployment is to an ESXi host or vCenter Server
 # Use either ESXI or VCENTER or VMC
-$DeploymentTarget = "VMC"
+$DeploymentTarget = "ESXI"
+
+$BinaryPath = "/Users/garryhughes/Downloads"
 
 # Full Path to both the Nested ESXi 6.7 VA + extracted VCSA 6.7 ISO
-$NestedESXiApplianceOVA = 'C:\Users\Administrator\Desktop\VMC-Customer0\Nested_ESXi6.7u3_Appliance_Template_v1.ova'
-$VCSAInstallerPath = 'C:\Users\Administrator\Desktop\VMC-Customer0\VMware-VCSA-all-6.7.0-15132721'
-$NSXOVA =  'C:\Users\Administrator\Desktop\VMC-Customer0\VMware-NSX-Manager-6.3.0-5007049.ova'
-$ESXi65OfflineBundle = 'C:\Users\Administrator\Desktop\VMC-Customer0\ESXi650-201701001\vmw-ESXi-6.5.0-metadata.zip' # Used for offline upgrade only
+$NestedESXiApplianceOVA = "$BinaryPath/Nested_ESXi6.7u3_Appliance_Template_v1.ova"
+$VCSAInstallerPath = "$BinaryPath/VMware-VCSA-all-6.7.0-8217866"
+$NSXOVA =  "$BinaryPath/VMware-NSX-Manager-6.4.4-11197766.ova"
+$ESXi65OfflineBundle = "$BinaryPath/vmw-ESXi-6.5.0-metadata.zip" # Used for offline upgrade only
 $ESXiProfileName = 'ESXi-6.5.0-20170404001-standard' # Used for online upgrade only
+
 
 # Nested ESXi VMs to deploy
 $NestedESXiHostnameToIPs = @{
-    "vesxi67-1" = "192.168.1.51"
-    "vesxi67-2" = "192.168.1.52"
-    "vesxi67-3" = "192.168.1.53"
+"vesxia" = "172.27.0.25"
+"vesxib" = "172.27.0.26"
+"vesxic" = "172.27.0.27"
 }
+
 
 # Nested ESXi VM Resources
 $NestedESXivCPU = "2"
@@ -67,53 +73,53 @@ $NestedESXiCapacityvDisk = "8" #GB
 
 # VCSA Deployment Configuration
 $VCSADeploymentSize = "tiny"
-$VCSADisplayName = "vcenter67-1"
-$VCSAIPAddress = "192.168.1.50"
-$VCSAHostname = "vcenter67-1.vmware.corp" #Change to IP if you don't have valid DNS
-$VCSAPrefix = "24"
+$VCSADisplayName = "vcsa.greenscript.net"
+$VCSAIPAddress = "172.27.0.20"
+$VCSAHostname = "vcsa.greenscript.net" #Change to IP if you don't have valid DNS
+$VCSAPrefix = "22"
 $VCSASSODomainName = "vsphere.local"
 $VCSASSOPassword = "VMware1!"
 $VCSARootPassword = "VMware1!"
 $VCSASSHEnable = "true"
 
 # General Deployment Configuration for Nested ESXi, VCSA & NSX VMs
-$VirtualSwitchType = "VDS" # VSS or VDS
-$VMNetwork = "sddc-cgw-network-1"
-$VMDatastore = "WorkloadDatastore"
-$VMNetmask = "255.255.255.0"
-$VMGateway = "192.168.1.1"
-$VMDNS = "192.168.1.100"
+$VirtualSwitchType = "VSS" # VSS or VDS
+$VMNetwork = "VM Network"
+$VMDatastore = "DatastoreSSD"
+$VMNetmask = "255.255.252.0"
+$VMGateway = "172.27.0.1"
+$VMDNS = "172.27.0.1"
 $VMNTP = "pool.ntp.org"
 $VMPassword = "VMware1!"
-$VMDomain = "vmware.corp"
-$VMSyslog = "192.168.1.200"
+$VMDomain = "greenscript.net"
+$VMSyslog = "172.27.0.14"
 # Applicable to Nested ESXi only
 $VMSSH = "true"
 $VMVMFS = "false"
 # Applicable to VC Deployment Target only
-$VMCluster = "Cluster-1"
+$VMCluster = "Cluster"
 # Defaults for VMC
-$VMDatacenter = "SDDC-Datacenter"
+$VMDatacenter = "Datacenter"
 $VMFolder = "Workloads"
 $VMResourcePool = "Compute-ResourcePool"
 
 # Name of new vSphere Datacenter/Cluster when VCSA is deployed
-$NewVCDatacenterName = "Datacenter"
+$NewVCDatacenterName = "SDDC-Datacenter"
 $NewVCVSANClusterName = "vSphere-Cluster"
 
 # NSX Manager Configuration
 $DeployNSX = 0
 $NSXvCPU = "2" # Reconfigure NSX vCPU
 $NSXvMEM = "8" # Reconfigure NSX vMEM (GB)
-$NSXDisplayName = "nsx63-1"
-$NSXHostname = "nsx63-1.primp-industries.com"
-$NSXIPAddress = "172.30.0.250"
-$NSXNetmask = "255.255.255.0"
-$NSXGateway = "172.30.0.1"
+$NSXDisplayName = "nsx.greenscript.net"
+$NSXHostname = "nsx.greenscript.net"
+$NSXIPAddress = "172.27.0.17"
+$NSXNetmask = "255.255.252.0"
+$NSXGateway = "172.27.0.1"
 $NSXSSHEnable = "true"
 $NSXCEIPEnable = "false"
-$NSXUIPassword = "VMw@re123!"
-$NSXCLIPassword = "VMw@re123!"
+$NSXUIPassword = "VMware1!"
+$NSXCLIPassword = "VMware1!"
 
 # VDS / VXLAN Configurations
 $PrivateVXLANVMNetwork = "dv-private-network" # Existing Portgroup
@@ -124,13 +130,13 @@ $VXLANNetmask = "255.255.255.0"
 
 # Advanced Configurations
 # Set to 1 only if you have DNS (forward/reverse) for ESXi hostnames
-$addHostByDnsName = 1
+$addHostByDnsName = 0
 # Upgrade vESXi hosts (defaults to pulling upgrade from VMware using profile specified in $ESXiProfileName)
 $upgradeESXi = 0
 # Set to 1 only if you want to upgrade using local bundle specified in $ESXi65OfflineBundle
 $offlineUpgrade = 0
 # Enable verbose output to a new PowerShell Console. Thanks to suggestion by Christian Mohn
-$enableVerboseLoggingToNewShell = 0
+$enableVerboseLoggingToNewShell = 1
 
 #### DO NOT EDIT BEYOND HERE ####
 
