@@ -39,7 +39,7 @@
 
 
 # Physical ESXi host or vCenter Server to deploy vSphere 6.7 lab
-$VIServer = "esx.greenscript.net"
+$VIServer = "esxi.greenscript.net"
 $VIUsername = "root"
 $VIPassword = "VMware1!"
 
@@ -88,7 +88,7 @@ $VMNetwork = "VM Network"
 $VMDatastore = "DatastoreSSD"
 $VMNetmask = "255.255.252.0"
 $VMGateway = "172.27.0.1"
-$VMDNS = "172.27.0.1"
+$VMDNS = "172.27.0.2"
 $VMNTP = "pool.ntp.org"
 $VMPassword = "VMware1!"
 $VMDomain = "greenscript.net"
@@ -470,7 +470,7 @@ if($confirmDeployment -eq 1) {
 }
 
 My-Logger "Connecting to $VIServer ..."
-$viConnection = Connect-VIServer $VIServer -User $VIUsername -Password $VIPassword -WarningAction SilentlyContinue
+$viConnection = Connect-VIServer $VIServer -User $VIUsername -Password $VIPassword -WarningAction SilentlyContinue -Force
 
 if($DeploymentTarget -eq "ESXI") {
     $datastore = Get-Datastore -Server $viConnection -Name $VMDatastore
