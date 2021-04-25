@@ -47,7 +47,7 @@ $VIPassword = "VMware1!"
 # Use either ESXI or VCENTER or VMC
 $DeploymentTarget = "ESXI"
 
-$BinaryPath = "/Users/garryhughes/Downloads"
+$BinaryPath = "~/Downloads"
 
 # Full Path to both the Nested ESXi 6.7 VA + extracted VCSA 6.7 ISO
 $NestedESXiApplianceOVA = "$BinaryPath/Nested_ESXi6.7u3_Appliance_Template_v1.ova"
