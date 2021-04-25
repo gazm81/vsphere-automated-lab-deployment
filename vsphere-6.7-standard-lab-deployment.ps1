@@ -39,7 +39,7 @@
 
 
 # Physical ESXi host or vCenter Server to deploy vSphere 6.7 lab
-$VIServer = "esx.greenscript.net"
+$VIServer = "esxi.greenscript.net"
 $VIUsername = "root"
 $VIPassword = "VMware1!"
 
